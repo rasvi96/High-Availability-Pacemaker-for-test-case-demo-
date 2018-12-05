@@ -16,6 +16,7 @@ Our goal is to create High Availability setup with corosync, pacemaker and float
 4. Start and Configure Pacemaker
 5. Configure Cluster Properties
 6. Testing High Availability Setup
+7. Conclusion
 # Creating Droplets
 Create two Ubuntu 14.04 Operating Systems as two servers in Oracle VirtualBox(or VMWare Workstation).
 # Configure Time Synchronization
@@ -240,10 +241,64 @@ If you check the status of your cluster
 ```
 sudo crm status or sudo crm_mon
 ```
+By running either of above commands, you can see that the resource agent is added.
+```
+Last updated: Fri Oct 16 14:38:36 2018
+Last change: Fri Oct 16 14:36:01 2018 via crmd on primary
+Stack: corosync
+Current DC: primary (1) - partition with quorum
+Version: 1.1.10-42f2063
+2 Nodes configured
+1 Resources configured
 
+Online: [ primary secondary ]
+FAILOVER-ADDR (ocf::heartbeat:IPaddr2): Started primary
+```
+# Test High Availability Setup
+It's important to test that our high availability setup works, so let's do that now.
+Currently, the primary server is started i.e., the primary server is in active condition which is accessed by host OS through Floating IP and the secondary server is in passive condition.
+To test our setup, in host OS(may be Windows) open the command promt and just ping the Floating IP that you mentioned in Corosync configuration file
+```
+ping -t 192.168.56.200(type your Floating IP)
+```
+Next, restart the primary server
+```
+primary$ sudo reboot
+```
+And simultaneously, monitor the cluster resource manager by running the following command in secondary server
+```
+secondary$ crm_mon
+```
+In secondary server you can see that changes ```Started primary``` will change to ```Started secondary``` and also you can able to see a minute in TTL in command prompt in Windows(Host OS).
+If you followed these steps properly, then you can see this output ideally.
+# Useful commands for troubleshooting
+```
+sudo crm configure edit
+```
+You can set a node to standby, online mode
+```
+sudo crm node standby NodeName 
+sudo crm node online NodeName
+```
+You can edit a resource, which allows you to reconfigure it, with this command:
+```
+sudo crm configure edit ResourceName
+```
+You can delete a resource, which must be stopped before it is deleted, with these command:
+```
+sudo crm resource stop ResourceName
+sudo crm configure delete ResourceName
+```
+Lastly, the crm command can be run by itself to access an interactive crm prompt:
+```
+crm
+```
+# Conclusion
+Congratulations! You now have a basic HA server setup using Corosync, Pacemaker, and a Floating IP.
 
+# References
+https://www.digitalocean.com/community/tutorials/how-to-create-a-high-availability-setup-with-corosync-pacemaker-and-floating-ips-on-ubuntu-14-04
+ 
+To learn more about NTP, check out this 
 
-
-
-
-
+https://www.digitalocean.com/community/tutorials/additional-recommended-steps-for-new-ubuntu-14-04-servers#configure-timezones-and-network-time-protocol-synchronization
