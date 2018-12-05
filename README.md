@@ -10,3 +10,9 @@ In essence, Corosync enables servers to communicate as a cluster, while Pacemake
 # Goal
 Our goal is to create High Availability setup with corosync, pacemaker and floating IP. When completed, the HA setup will consist of two Ubuntu 14.04 servers in an active/passive configuration. This will be accomplished by pointing a Floating IP, which is how your users will access your web service, to point to the primary (active) server unless a failure is detected. If a failure is detected to the primary server(active) then the secondary server immediately become active and providing web service without any interruption.
 # Steps to follow
+1. Create two Ubuntu 14.04 droplets( for demo you can create it as two VMs in Oracle VirtualBox or VMware Workstation)
+2. Installing Pacemaker and Corosync
+3. Configure Corosync(Adding Floating IP)
+4. Start and Configure Pacemaker
+5. Configure Cluster Properties
+6. Testing High Availability Setup
