@@ -1,3 +1,5 @@
+/etc/corosync/corosync.conf
+
 totem {
   version: 2
   cluster_name: lbcluster
