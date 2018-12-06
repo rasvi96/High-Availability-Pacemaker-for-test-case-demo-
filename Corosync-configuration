@@ -1,0 +1,36 @@
+totem {
+  version: 2
+  cluster_name: lbcluster
+  transport: udpu
+  interface {
+    ringnumber: 0
+    bindnetaddr: 192.168.56.200
+    broadcast: yes
+    mcastport: 5405
+  }
+}
+
+quorum {
+  provider: corosync_votequorum
+  two_node: 1
+}
+
+nodelist {
+  node {
+    ring0_addr: 192.168.56.102
+    name: Server 1
+    nodeid: 1
+  }
+  node {
+    ring0_addr: 192.168.56.108
+    name: Server 2
+    nodeid: 2
+  }
+}
+
+logging {
+  to_logfile: yes
+  logfile: /var/log/corosync/corosync.log
+  to_syslog: yes
+  timestamp: on
+}
