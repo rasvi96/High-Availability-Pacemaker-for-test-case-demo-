@@ -128,6 +128,7 @@ logging {
 }
 ```
 Save and exit.
+Also, I have attached an example of Corosync configuration file to understand easily for you.
 
 Next, we need to configure Corosync to allow the Pacemaker service.
 
